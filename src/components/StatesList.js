@@ -1,4 +1,5 @@
 import React from "react";
+import "../statelist.css";
 import { Link } from "react-router-dom";
 
 class StatesList extends React.Component {
@@ -6,13 +7,12 @@ class StatesList extends React.Component {
 
   render() {
     return (
-      <div>
-        <ol>
+      <div className="state-list-wrapper">
+        <div className="main-heading">Select State : </div>
+        <ol className="state-list">
           {this.props.US.map((item) => (
-            <li key={item.objectId}>
-              <Link
-                to={`/sales-tax-calculator?state=${item.postalAbreviation}`}
-              >
+            <li className="state" key={item.objectId}>
+              <Link to={`/sales-tax-calculator/${item.postalAbreviation}`}>
                 {item.name}
               </Link>
             </li>

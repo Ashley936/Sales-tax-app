@@ -1,0 +1,165 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap");
+
+.side-page-container {
+  display: flex;
+  font-family: "Roboto Slab", serif;
+}
+
+.city-list {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 10px;
+}
+
+.city-list ol li {
+  list-style-type: none;
+  margin-right: 30px;
+  padding: 5px 5px;
+  padding-left: 15px;
+  width: 200px; /* IMPORTANT */
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.main-list-item {
+  border-right: 1px rgb(100, 100, 100) solid;
+  border-bottom: 1px rgb(100, 100, 100) solid;
+  transition: all 1s;
+
+  align-items: center;
+  justify-content: space-between;
+}
+.list-item-name {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.min-max-icon {
+  margin: 0 10px;
+}
+.sub-list {
+  border-top: 1px black solid;
+  width: 100%;
+  background-color: black;
+  color: white;
+  font-weight: 400;
+  font-size: 22px;
+}
+
+/* Calculator part */
+.sales-tax-form-container {
+  padding: 35px 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.sales-tax-form-container h1 {
+  font-size: 3rem;
+}
+
+.sales-tax-form-container form {
+  margin: 6vh auto;
+  padding: 3vh;
+  min-width: 300px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background: #f9f9f9;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.sales-tax-form-container form input {
+  font-size: 14px;
+  height: 30px;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.calculate-btn {
+  width: 130px;
+  height: 40px;
+  padding: 10px 25px;
+  font-family: "Lato", sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+}
+
+.calculate-btn span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.calculate-btn:before,
+.calculate-btn:after {
+  position: absolute;
+  content: "";
+  height: 0%;
+  width: 2px;
+  background: #000;
+}
+.calculate-btn:before {
+  right: 0;
+  top: 0;
+  transition: all 500ms ease;
+}
+.calculate-btn:after {
+  left: 0;
+  bottom: 0;
+  transition: all 500ms ease;
+}
+.calculate-btn:hover {
+  color: #000;
+  background: transparent;
+}
+.calculate-btn:hover:before {
+  transition: all 500ms ease;
+  height: 100%;
+}
+.calculate-btn:hover:after {
+  transition: all 500ms ease;
+  height: 100%;
+}
+.calculate-btn span:before,
+.calculate-btn span:after {
+  position: absolute;
+  content: "";
+  background: #000;
+}
+.calculate-btn span:before {
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 2px;
+  transition: all 500ms ease;
+}
+.calculate-btn span:after {
+  right: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  transition: all 500ms ease;
+}
+.calculate-btn span:hover:before {
+  width: 100%;
+}
+.calculate-btn span:hover:after {
+  width: 100%;
+}
