@@ -1,17 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@500&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
+a {
+  text-decoration: none;
+}
 .navbar-wrapper {
   width: 100%;
   height: 60px;
   background-color: #171717;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding-right: 10px;
   align-items: center;
+}
+.nav-icon a {
+  color: white;
+  font-size: 2rem;
+  margin: 0 15px;
+}
+
+.nav-icon span {
+  font-family: "Sansita Swashed", cursive;
 }
 .content-wrapper {
   width: 360px;
@@ -113,4 +125,17 @@
   outline: none;
   font-size: 18px;
   position: absolute;
+}
+
+/* /////////////////////////////////////////////////// */
+/* ////////////////////// MEDIA QUERIES ////////////// */
+/* /////////////////////////////////////////////////// */
+
+@media screen and (max-width: 670px) {
+  .search-wrapper.active {
+    width: 100%;
+  }
+  .content-wrapper {
+    width: 60%;
+  }
 }

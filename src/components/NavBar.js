@@ -14,9 +14,21 @@ class NavBar extends React.Component {
     });
     return newArr;
   };
+  componentDidMount() {
+    window.addEventListener("click", () => {
+      if (this.state.results.length > 0) {
+        this.setState({ search: "", results: [] });
+      }
+    });
+  }
   render() {
     return (
       <div className="navbar-wrapper">
+        <div className="nav-icon">
+          <Link to="/">
+            <span>T</span>ax
+          </Link>
+        </div>
         <div className="content-wrapper">
           <div className="search-wrapper active">
             <div className="search-input">
@@ -46,7 +58,10 @@ class NavBar extends React.Component {
               return (
                 <li
                   key={item.zip_code}
-                  onClick={() => this.setState({ search: "", results: [] })}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.setState({ search: "", results: [] });
+                  }}
                 >
                   <Link
                     to={`/sales-tax-calculator/${item.state}/${item.city}/${item.zip_code}`}
