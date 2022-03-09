@@ -8,16 +8,21 @@ class StatesList extends React.Component {
   render() {
     return (
       <div className="state-list-wrapper">
-        <div className="main-heading">Select State : </div>
-        <ol className="state-list">
-          {this.props.US.map((item) => (
-            <li className="state" key={item.objectId}>
-              <Link to={`/sales-tax-calculator/${item.postalAbreviation}`}>
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ol>
+        <div className="main-heading">
+          <div>Sales tax Calculator </div>
+          <div>Select State: </div>
+        </div>
+        <div className="state-list">
+          <ol>
+            {this.props.US.map((item) => (
+              <li className="state" key={item.objectId}>
+                <Link to={`/sales-tax-calculator/${item.postalAbreviation}`}>
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     );
   }
