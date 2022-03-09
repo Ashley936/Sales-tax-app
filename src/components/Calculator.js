@@ -26,12 +26,12 @@ class Calculator extends React.Component {
     expand: {},
     showList: true,
   };
-  componentDidMount() {
+  updateDetails = () => {
     let stateCode = this.props.match.params.state;
     let selectedCity = this.props.match.params.city;
     let cityCode = this.props.match.params.zip_code;
     let cities = this.props.cities.filter((item) => item.state === stateCode);
-    if (!selectedCity) {
+    if (!selectedCity || !cityCode) {
       selectedCity = cities[0];
     } else {
       selectedCity = this.props.cities.filter(
@@ -39,22 +39,21 @@ class Calculator extends React.Component {
           item.city === selectedCity && item.zip_code === parseInt(cityCode)
       )[0];
     }
-    this.setState({ cities, selectedCity });
+
     this.getTaxRate(selectedCity.zip_code);
+    return { cities, selectedCity };
+  };
+  componentDidMount() {
+    let { cities, selectedCity } = this.updateDetails();
+    this.setState({ cities, selectedCity });
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.zip_code !== this.props.match.params.zip_code) {
-      let newCity = this.props.cities.filter(
-        (item) => item.zip_code === parseInt(this.props.match.params.zip_code)
-      )[0];
-      let cities = this.props.cities.filter(
-        (item) => item.state === this.props.match.params.state
-      );
+      let { cities, selectedCity } = this.updateDetails();
       this.setState({
-        selectedCity: newCity,
+        selectedCity,
         cities,
       });
-      this.getTaxRate(newCity.zip_code);
     }
   }
 
@@ -132,10 +131,7 @@ class Calculator extends React.Component {
               {this.unique(this.state.cities, "city")
                 .slice(this.state.n, this.state.n + 10)
                 .map((item) => (
-                  <li
-                    className="main-list-item"
-                    key={this.state.cities.longitude}
-                  >
+                  <li className="main-list-item" key={item.city}>
                     <div className="list-item-name">
                       <Link
                         to={`/sales-tax-calculator/${item.state}/${item.city}/${item.zip_code}`}
@@ -184,7 +180,8 @@ class Calculator extends React.Component {
               <span
                 className="controls"
                 onClick={() =>
-                  this.state.n < this.state.cities.length
+                  this.state.n + 10 <
+                  this.unique(this.state.cities, "city").length
                     ? this.setState({ n: this.state.n + 10 })
                     : ""
                 }

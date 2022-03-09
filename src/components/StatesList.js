@@ -15,8 +15,8 @@ class StatesList extends React.Component {
         <div className="state-list">
           <ol>
             {this.props.US.map((item) => (
-              <li className="state" key={item.objectId}>
-                <Link to={`/sales-tax-calculator/${item.postalAbreviation}`}>
+              <li className="state" key={item.name}>
+                <Link to={`/sales-tax-calculator/${item["alpha-2"]}`}>
                   {item.name}
                 </Link>
               </li>

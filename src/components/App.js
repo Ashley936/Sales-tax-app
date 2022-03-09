@@ -5,16 +5,15 @@ import axios from "axios";
 import Calculator from "./Calculator";
 import StatesList from "./StatesList";
 import NavBar from "./NavBar";
-import states from "../api/states";
 
 class App extends React.Component {
   state = { US: [], allData: [] };
   componentDidMount() {
-    states
+    axios
       .get(
-        "/Usabystate_States?order=ACL&keys=ACL,name,objectId,postalAbreviation"
+        "https://gist.githubusercontent.com/tvpmb/4734703/raw/b54d03154c339ed3047c66fefcece4727dfc931a/US%2520State%2520List"
       )
-      .then((res) => this.setState({ US: res.data.results }));
+      .then((res) => this.setState({ US: res.data }));
     axios
       .get(
         "https://raw.githubusercontent.com/millbj92/US-Zip-Codes-JSON/master/USCities.json"

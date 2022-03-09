@@ -14,12 +14,16 @@ class NavBar extends React.Component {
     });
     return newArr;
   };
+  clearSearch = () => {
+    if (this.state.results.length > 0) {
+      this.setState({ search: "", results: [] });
+    }
+  };
   componentDidMount() {
-    window.addEventListener("click", () => {
-      if (this.state.results.length > 0) {
-        this.setState({ search: "", results: [] });
-      }
-    });
+    window.addEventListener("click", this.clearSearch);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("click", this.clearSearch);
   }
   render() {
     return (
@@ -60,7 +64,6 @@ class NavBar extends React.Component {
                   key={item.zip_code}
                   onClick={(e) => {
                     e.stopPropagation();
-                    this.setState({ search: "", results: [] });
                   }}
                 >
                   <Link
