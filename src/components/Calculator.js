@@ -301,10 +301,16 @@ class Calculator extends React.Component {
             </div>
           </div>
         </div>
-        <Location
-          lat={this.state.selectedCity.latitude}
-          long={this.state.selectedCity.longitude}
-        />
+        {this.state.selectedCity.city ? (
+          <Location
+            lat={this.state.selectedCity.latitude}
+            long={this.state.selectedCity.longitude}
+            zip_code={this.state.selectedCity.zip_code}
+            city={this.state.selectedCity.city}
+          />
+        ) : (
+          ""
+        )}
       </div>
     );
   }
