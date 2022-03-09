@@ -22,6 +22,7 @@ class App extends React.Component {
     console.log("mount");
   }
   render() {
+    console.log(this.state);
     return (
       <>
         <BrowserRouter>
@@ -32,8 +33,11 @@ class App extends React.Component {
               exact
               path="/sales-tax-calculator/:state"
               element={
-                this.state.allData.length > 0 ? (
-                  <Calculator cities={this.state.allData} />
+                this.state.allData.length > 0 && this.state.US.length > 0 ? (
+                  <Calculator
+                    cities={this.state.allData}
+                    stateNames={this.state.US}
+                  />
                 ) : (
                   ""
                 )
@@ -43,8 +47,11 @@ class App extends React.Component {
               exact
               path="/sales-tax-calculator/:state/:city/:zip_code"
               element={
-                this.state.allData.length > 0 ? (
-                  <Calculator cities={this.state.allData} />
+                this.state.allData.length > 0 && this.state.US.length > 0 ? (
+                  <Calculator
+                    cities={this.state.allData}
+                    stateNames={this.state.US}
+                  />
                 ) : (
                   ""
                 )

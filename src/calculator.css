@@ -100,6 +100,14 @@
   background: #000;
   color: #fff;
 }
+.city-list ol #list-heading {
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+}
 
 /* /////////////////// Calculator part ////////////////////// */
 .sales-tax-form-container {

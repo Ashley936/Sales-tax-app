@@ -18,6 +18,7 @@ class Calculator extends React.Component {
     cities: [],
     selectedCity: {},
     stateCode: "",
+    stateName: "",
     rate: "",
     rates: [],
     principal: "",
@@ -26,8 +27,12 @@ class Calculator extends React.Component {
     expand: {},
     showList: true,
   };
+
   updateDetails = () => {
     let stateCode = this.props.match.params.state;
+    let stateName = this.props.stateNames.find(
+      (item) => item["alpha-2"] === stateCode
+    ).name;
     let selectedCity = this.props.match.params.city;
     let cityCode = this.props.match.params.zip_code;
     let cities = this.props.cities.filter((item) => item.state === stateCode);
@@ -41,18 +46,19 @@ class Calculator extends React.Component {
     }
 
     this.getTaxRate(selectedCity.zip_code);
-    return { cities, selectedCity };
+    return { cities, selectedCity, stateName };
   };
   componentDidMount() {
-    let { cities, selectedCity } = this.updateDetails();
-    this.setState({ cities, selectedCity });
+    let { cities, selectedCity, stateName } = this.updateDetails();
+    this.setState({ cities, selectedCity, stateName });
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.zip_code !== this.props.match.params.zip_code) {
-      let { cities, selectedCity } = this.updateDetails();
+      let { cities, selectedCity, stateName } = this.updateDetails();
       this.setState({
         selectedCity,
         cities,
+        stateName,
       });
     }
   }
@@ -128,6 +134,7 @@ class Calculator extends React.Component {
             className={`city-list ${this.state.showList ? "show-list" : ""}`}
           >
             <ol>
+              <li id="list-heading">More cities from {this.state.stateName}</li>
               {this.unique(this.state.cities, "city")
                 .slice(this.state.n, this.state.n + 10)
                 .map((item) => (
@@ -288,7 +295,7 @@ class Calculator extends React.Component {
               <div className="sub-context">
                 {this.state.selectedCity.city} city is located in{" "}
                 {this.state.selectedCity.county} county in state{" "}
-                {this.state.selectedCity.state} with zip-code :-{" "}
+                {this.state.stateName} with zip-code :-{" "}
                 {this.state.selectedCity.zip_code}.<br />
                 {this.getPincodes(this.state.selectedCity.city).length > 1
                   ? `Some cities have multiple zip-codes to distinguish between different areas. ${
