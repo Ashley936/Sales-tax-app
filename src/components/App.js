@@ -6,6 +6,7 @@ import Calculator from "./Calculator";
 import StatesList from "./StatesList";
 import NavBar from "./NavBar";
 import ScrollToTop from "./ScrollToTop";
+import Footer from "./Footer";
 
 class App extends React.Component {
   state = { US: [], allData: [] };
@@ -64,6 +65,7 @@ class App extends React.Component {
               }
             />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </>
     );

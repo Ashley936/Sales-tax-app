@@ -14,6 +14,7 @@ function withRouter(Children) {
 }
 
 class Calculator extends React.Component {
+  _isMounted = false;
   state = {
     cities: [],
     selectedCity: {},
@@ -50,8 +51,9 @@ class Calculator extends React.Component {
     return { cities, selectedCity, stateName: stateInfo.name };
   };
   componentDidMount() {
+    this._isMounted = true;
     let { cities, selectedCity, stateName } = this.updateDetails();
-    this.setState({ cities, selectedCity, stateName });
+    if (this._isMounted) this.setState({ cities, selectedCity, stateName });
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.zip_code !== this.props.match.params.zip_code) {
@@ -62,6 +64,9 @@ class Calculator extends React.Component {
         stateName,
       });
     }
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   getTaxRate = (code) => {
@@ -125,8 +130,8 @@ class Calculator extends React.Component {
   };
   render() {
     return (
-      <div className="ultimate-wrapper">
-        <div className="side-page-container">
+      <>
+        <section className="side-page-container">
           <div
             className="open-list"
             onClick={() => {
@@ -142,7 +147,7 @@ class Calculator extends React.Component {
           >
             {this.state.showList ? "SHOW" : "HIDE"} CITIES
           </div>
-          <div
+          <aside
             className={`city-list ${this.state.showList ? "show-list" : ""}`}
           >
             <ol>
@@ -184,14 +189,10 @@ class Calculator extends React.Component {
                   </li>
                 ))}
             </ol>
-            <div
-              className={`pagination-controls ${
-                this.state.n === -1 ? "hide" : ""
-              }`}
-            >
+            <div className="pagination-controls">
               {" "}
               <span
-                className="controls"
+                className={`controls ${this.state.n === -1 ? "hide" : ""}`}
                 onClick={() =>
                   this.state.n > 0
                     ? this.setState({ n: this.state.n - 10 })
@@ -200,9 +201,16 @@ class Calculator extends React.Component {
               >
                 -
               </span>
-              <span onClick={() => this.setState({ n: -1 })}>List More </span>
               <span
-                className="controls"
+                onClick={() => {
+                  let n = this.state.n === -1 ? 0 : -1;
+                  this.setState({ n });
+                }}
+              >
+                {this.state.n === -1 ? "Show Less" : "Show all"}{" "}
+              </span>
+              <span
+                className={`controls ${this.state.n === -1 ? "hide" : ""}`}
                 onClick={() =>
                   this.state.n + 10 <
                   this.unique(this.state.cities, "city").length
@@ -213,8 +221,8 @@ class Calculator extends React.Component {
                 +
               </span>
             </div>
-          </div>
-          <div className="sales-tax-form-container">
+          </aside>
+          <section className="sales-tax-form-container">
             <h1>
               Sales Tax for{" "}
               <span>
@@ -224,7 +232,7 @@ class Calculator extends React.Component {
                 :
               </span>
             </h1>
-            <div className="location-content">
+            <section className="location-content">
               <p>
                 Below you can find the general sales tax calculator for{" "}
                 {this.props.match.params.zip_code
@@ -234,10 +242,12 @@ class Calculator extends React.Component {
                 year 2021. This is a custom and easy to use{" "}
                 <Link to="/">sales tax calculator</Link>.
               </p>
-            </div>
+            </section>
             <form action="" className="sales-tax-form">
               <div>
+                <label for="principal">amount before tax</label>
                 <input
+                  name="principal"
                   placeholder="principal"
                   type="number"
                   value={this.state.principal}
@@ -247,7 +257,9 @@ class Calculator extends React.Component {
                 />
               </div>
               <div>
+                <label for="tax-rate">tax-rate</label>
                 <input
+                  name="tax-rate"
                   placeholder="tax-rate"
                   type="number"
                   value={this.state.rate}
@@ -257,7 +269,9 @@ class Calculator extends React.Component {
                 />
               </div>
               <div>
+                <label for="final-amount">amount after tax</label>
                 <input
+                  name="final-amount"
                   placeholder="final-amount"
                   value={this.state.finalAmount}
                   className="final-amount"
@@ -265,17 +279,30 @@ class Calculator extends React.Component {
                 />
               </div>
               <div>
-                <button
-                  className="calculate-btn"
-                  onClick={(e) => this.handleSubmit(e)}
-                >
-                  <span>Calculate</span>
-                </button>
+                <label for="tax-amount">tax-amount</label>
+                <input
+                  name="tax-amount"
+                  placeholder="tax-amount"
+                  value={
+                    this.state.finalAmount
+                      ? this.state.finalAmount - this.state.principal
+                      : ""
+                  }
+                  className="final-amount"
+                  readOnly
+                />
               </div>
+
+              <button
+                className="calculate-btn"
+                onClick={(e) => this.handleSubmit(e)}
+              >
+                <span>Calculate</span>
+              </button>
             </form>
-            <div className="calculator-info">
+            <section className="calculator-info">
               <div className="sub-heading">
-                How to use the Sales Tax Calculator ?
+                <h2>How to use the Sales Tax Calculator ?</h2>
               </div>
               <div className="sub-context">
                 <ol>
@@ -295,47 +322,55 @@ class Calculator extends React.Component {
                   </li>
                 </ol>
               </div>
-            </div>
-            <div className="calculation-method">
+            </section>
+            <section className="calculation-method">
               <div className="sub-heading">
-                Method to calculate{" "}
-                {this.props.match.params.zip_code
-                  ? this.state.selectedCity.city
-                  : this.state.stateName}{" "}
-                sales tax in 2022
+                <h2>
+                  Method to calculate{" "}
+                  {this.props.match.params.zip_code
+                    ? this.state.selectedCity.city
+                    : this.state.stateName}{" "}
+                  sales tax in 2022
+                </h2>
               </div>
               <div className="sub-context">
-                As we all know, there are different sales tax rates from state
-                to city to your area, and everything combined is the required
-                tax rate. In{" "}
-                {this.props.match.params.zip_code
-                  ? this.state.selectedCity.city
-                  : this.state.stateName}
-                , the total sales tax rate is {this.state.rate}
-                % . <br />
-                {this.state.rates.length > 0 && this.props.match.params.zip_code
-                  ? this.renderTaxRateInfo(this.state.rates)
-                  : ""}
-                <br />
-                The Sales tax rates may differ depending on the type of
-                purchase. Usually it includes rentals, lodging, consumer
-                purchases, sales, etc.
-              </div>
-            </div>
-            <div className="city-info">
-              <div className="sub-heading">
-                More About{" "}
-                <a
-                  href={`https://en.wikipedia.org/wiki/${
-                    this.props.match.params.zip_code
-                      ? `${this.state.selectedCity.city},_${this.state.stateName}`
-                      : this.state.stateName
-                  }`}
-                >
+                <p>
+                  As we all know, there are different sales tax rates from state
+                  to city to your area, and everything combined is the required
+                  tax rate. In{" "}
                   {this.props.match.params.zip_code
                     ? this.state.selectedCity.city
                     : this.state.stateName}
-                </a>
+                  , the total sales tax rate is {this.state.rate}% .{" "}
+                </p>
+                <p>
+                  {this.state.rates.length > 0 &&
+                  this.props.match.params.zip_code
+                    ? this.renderTaxRateInfo(this.state.rates)
+                    : ""}
+                  <br />
+                  The Sales tax rates may differ depending on the type of
+                  purchase. Usually it includes rentals, lodging, consumer
+                  purchases, sales, etc.
+                </p>
+              </div>
+            </section>
+            <section className="city-info">
+              <div className="sub-heading">
+                <h2>
+                  More About{" "}
+                  <a
+                    href={`https://en.wikipedia.org/wiki/${
+                      this.props.match.params.zip_code
+                        ? `${this.state.selectedCity.city},_${this.state.stateName}`
+                        : this.state.stateName
+                    }`}
+                  >
+                    {this.props.match.params.zip_code
+                      ? this.state.selectedCity.city
+                      : this.state.stateName}
+                  </a>
+                </h2>
               </div>
               <div className="sub-context">
                 {this.props.match.params.zip_code
@@ -367,32 +402,34 @@ class Calculator extends React.Component {
                       </div>
                     ))()}
               </div>
-            </div>
-          </div>
-        </div>
-        {this.state.selectedCity.city ? (
-          <Location
-            lat={
-              this.props.match.params.zip_code
-                ? this.state.selectedCity.latitude
-                : this.state.selectedCity.latitude + 0.01
-            }
-            long={
-              this.props.match.params.zip_code
-                ? this.state.selectedCity.longitude
-                : this.state.selectedCity.longitude + 0.01
-            }
-            city={
-              this.props.match.params.zip_code
-                ? this.state.selectedCity.city
-                : this.state.stateName
-            }
-            placeType={this.props.match.params.zip_code ? "city" : "state"}
-          />
-        ) : (
-          ""
-        )}
-      </div>
+            </section>
+          </section>
+        </section>
+        <section>
+          {this.state.selectedCity.city ? (
+            <Location
+              lat={
+                this.props.match.params.zip_code
+                  ? this.state.selectedCity.latitude
+                  : this.state.selectedCity.latitude + 0.01
+              }
+              long={
+                this.props.match.params.zip_code
+                  ? this.state.selectedCity.longitude
+                  : this.state.selectedCity.longitude + 0.01
+              }
+              city={
+                this.props.match.params.zip_code
+                  ? this.state.selectedCity.city
+                  : this.state.stateName
+              }
+              placeType={this.props.match.params.zip_code ? "city" : "state"}
+            />
+          ) : (
+            ""
+          )}
+        </section>
+      </>
     );
   }
 }

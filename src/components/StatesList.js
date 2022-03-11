@@ -7,10 +7,14 @@ class StatesList extends React.Component {
 
   render() {
     return (
-      <div className="state-list-wrapper">
+      <section id="home-one" className="state-list-wrapper">
         <div className="main-heading">
-          <div>Sales tax Calculator </div>
-          <div>Select State: </div>
+          <div>
+            <h1>Sales tax Calculator</h1>
+          </div>
+          <div>
+            <h2>Select State: </h2>
+          </div>
         </div>
         <div className="state-list">
           <ol>
@@ -23,7 +27,7 @@ class StatesList extends React.Component {
             ))}
           </ol>
         </div>
-      </div>
+      </section>
     );
   }
 }

@@ -75,6 +75,7 @@ class NavBar extends React.Component {
                     key={item.zip_code}
                     onClick={(e) => {
                       e.stopPropagation();
+                      this.setState({ search: "", results: [] });
                     }}
                   >
                     <Link
