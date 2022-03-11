@@ -6,9 +6,10 @@
   font-family: "Roboto Slab", serif;
 }
 .hide {
-  display: none;
+  display: none !important;
 }
 .open-list {
+  display: none;
   position: absolute;
   top: 10px;
   left: 10px;
@@ -77,6 +78,9 @@
   font-weight: 400;
   font-size: 22px;
 }
+.sub-list li a {
+  width: 100%;
+}
 .sub-list li:hover {
   background-color: rgb(71, 71, 71);
 }
@@ -88,10 +92,10 @@
   font-size: 1.3rem;
 }
 
-.pagination-controls .controls {
+.pagination-controls span {
   cursor: pointer;
 }
-.pagination-controls .controls:hover {
+.pagination-controls span:hover {
   background-color: #333;
 }
 .pagination-controls span {
@@ -256,15 +260,15 @@
   .show-list {
     left: -100%;
   }
+  .open-list {
+    display: flex;
+  }
   .main-list-item {
     border-bottom: 1px solid rgb(0 0 0 / 20%);
     border-right: none;
   }
   .sales-tax-form-container {
     width: 80%;
-  }
-  .hide {
-    display: flex;
   }
   .side-page-container {
     position: relative;

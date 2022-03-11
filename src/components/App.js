@@ -5,6 +5,7 @@ import axios from "axios";
 import Calculator from "./Calculator";
 import StatesList from "./StatesList";
 import NavBar from "./NavBar";
+import ScrollToTop from "./ScrollToTop";
 
 class App extends React.Component {
   state = { US: [], allData: [] };
@@ -18,14 +19,19 @@ class App extends React.Component {
       .get(
         "https://raw.githubusercontent.com/millbj92/US-Zip-Codes-JSON/master/USCities.json"
       )
-      .then((res) => this.setState({ allData: res.data }));
+      .then((res) => {
+        let allData = res.data.sort(function (a, b) {
+          return a.city.localeCompare(b.city);
+        });
+        this.setState({ allData });
+      });
     console.log("mount");
   }
   render() {
-    console.log(this.state);
     return (
       <>
         <BrowserRouter>
+          <ScrollToTop />
           <NavBar allData={this.state.allData} />
           <Routes>
             <Route exact path="/" element={<StatesList US={this.state.US} />} />

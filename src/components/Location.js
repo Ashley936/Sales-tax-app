@@ -1,8 +1,8 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import React from "react";
-function ChangeMapView({ coords }) {
+function ChangeMapView({ coords, zoom }) {
   const map = useMap();
-  map.setView(coords, map.getZoom());
+  map.setView(coords, zoom);
 
   return null;
 }
@@ -14,17 +14,18 @@ class Location extends React.Component {
       <MapContainer
         style={{ width: "100%", height: "80vh" }}
         center={position}
-        zoom={8}
+        zoom={this.props.placeType === "city" ? 10 : 5}
       >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <ChangeMapView coords={position} />
+        <ChangeMapView
+          coords={position}
+          zoom={this.props.placeType === "city" ? 10 : 5}
+        />
         <Marker position={position}>
-          <Popup>
-            {this.props.city}({this.props.zip_code})
-          </Popup>
+          <Popup>{this.props.city}</Popup>
         </Marker>
       </MapContainer>
     );

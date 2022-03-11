@@ -17,7 +17,6 @@ class Calculator extends React.Component {
   state = {
     cities: [],
     selectedCity: {},
-    stateCode: "",
     stateName: "",
     rate: "",
     rates: [],
@@ -29,13 +28,15 @@ class Calculator extends React.Component {
   };
 
   updateDetails = () => {
-    let stateCode = this.props.match.params.state;
-    let stateName = this.props.stateNames.find(
-      (item) => item["alpha-2"] === stateCode
-    ).name;
+    let state = this.props.match.params.state;
+    let stateInfo = this.props.stateNames.find(
+      (item) => item.name === state || item["alpha-2"] === state
+    );
     let selectedCity = this.props.match.params.city;
     let cityCode = this.props.match.params.zip_code;
-    let cities = this.props.cities.filter((item) => item.state === stateCode);
+    let cities = this.props.cities.filter(
+      (item) => item.state === stateInfo["alpha-2"]
+    );
     if (!selectedCity || !cityCode) {
       selectedCity = cities[0];
     } else {
@@ -46,7 +47,7 @@ class Calculator extends React.Component {
     }
 
     this.getTaxRate(selectedCity.zip_code);
-    return { cities, selectedCity, stateName };
+    return { cities, selectedCity, stateName: stateInfo.name };
   };
   componentDidMount() {
     let { cities, selectedCity, stateName } = this.updateDetails();
@@ -69,8 +70,10 @@ class Calculator extends React.Component {
       code = "0" + code;
     }
     taxRate.get(`/bypostalcode?country=USA&postalCode=${code}`).then((res) => {
-      console.log(res.data);
-      this.setState({ rate: res.data.totalRate, rates: res.data.rates });
+      let rate = this.props.match.params.zip_code
+        ? res.data.totalRate
+        : res.data.rates.find((item) => item.type === "State").rate;
+      this.setState({ rate: rate * 100, rates: res.data.rates });
     });
   };
 
@@ -93,7 +96,7 @@ class Calculator extends React.Component {
             <Link
               to={`/sales-tax-calculator/${cityInfo.state}/${cityInfo.city}/${item}`}
             >
-              {item}
+              <div>{item}</div>
             </Link>
           </li>
         ))}
@@ -104,16 +107,19 @@ class Calculator extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     let finalAmount =
-      parseFloat(this.state.principal) + this.state.principal * this.state.rate;
+      parseFloat(this.state.principal) +
+      (this.state.principal * this.state.rate) / 100;
     this.setState({ finalAmount });
   };
   renderTaxRateInfo = (taxes) => {
     if (taxes.length === 1) {
-      return `Here all the tax i.e. ${taxes[0].rate}is due to the ${taxes[0].type} tax.`;
+      return `Here all the tax i.e. ${taxes[0].rate * 100}% is due to the ${
+        taxes[0].type
+      } tax.`;
     } else {
       return `The total tax here can be divided into ${taxes.length} parts.
       ${taxes.map(
-        (taxInfo) => ` ${taxInfo.type} tax: ${taxInfo.rate}% ${" "}`
+        (taxInfo) => ` ${taxInfo.type} tax: ${taxInfo.rate * 100}% ${" "}`
       )}`;
     }
   };
@@ -122,10 +128,16 @@ class Calculator extends React.Component {
       <div className="ultimate-wrapper">
         <div className="side-page-container">
           <div
-            className="open-list hide"
+            className="open-list"
             onClick={() => {
               let action = !this.state.showList;
-              this.setState({ showList: action });
+              var obj = { ...this.state.expand };
+              if (action) {
+                for (var city in obj) {
+                  obj[city] = false;
+                }
+              }
+              this.setState({ showList: action, expand: obj });
             }}
           >
             {this.state.showList ? "SHOW" : "HIDE"} CITIES
@@ -136,27 +148,28 @@ class Calculator extends React.Component {
             <ol>
               <li id="list-heading">More cities from {this.state.stateName}</li>
               {this.unique(this.state.cities, "city")
-                .slice(this.state.n, this.state.n + 10)
+                .slice(
+                  this.state.n === -1 ? 0 : this.state.n,
+                  this.state.n === -1
+                    ? this.state.cities.length
+                    : this.state.n + 10
+                )
                 .map((item) => (
                   <li className="main-list-item" key={item.city}>
-                    <div className="list-item-name">
-                      <Link
-                        to={`/sales-tax-calculator/${item.state}/${item.city}/${item.zip_code}`}
-                      >
-                        {item.city}
-                      </Link>
+                    <div
+                      className="list-item-name"
+                      onClick={(e) => {
+                        var obj = { ...this.state.expand };
 
-                      <div
-                        className="min-max-icon"
-                        onClick={(e) => {
-                          var obj = { ...this.state.expand };
+                        this.state.expand[item.city]
+                          ? (obj[item.city] = false)
+                          : (obj[item.city] = true);
+                        this.setState({ expand: obj });
+                      }}
+                    >
+                      {item.city}
 
-                          this.state.expand[item.city]
-                            ? (obj[item.city] = false)
-                            : (obj[item.city] = true);
-                          this.setState({ expand: obj });
-                        }}
-                      >
+                      <div className="min-max-icon">
                         {this.state.expand[item.city] ? (
                           <span>&#9650;</span>
                         ) : (
@@ -171,7 +184,11 @@ class Calculator extends React.Component {
                   </li>
                 ))}
             </ol>
-            <div className="pagination-controls">
+            <div
+              className={`pagination-controls ${
+                this.state.n === -1 ? "hide" : ""
+              }`}
+            >
               {" "}
               <span
                 className="controls"
@@ -183,7 +200,7 @@ class Calculator extends React.Component {
               >
                 -
               </span>
-              <span>List More </span>
+              <span onClick={() => this.setState({ n: -1 })}>List More </span>
               <span
                 className="controls"
                 onClick={() =>
@@ -199,13 +216,23 @@ class Calculator extends React.Component {
           </div>
           <div className="sales-tax-form-container">
             <h1>
-              Sales Tax for <span>{this.state.selectedCity.city}:</span>
+              Sales Tax for{" "}
+              <span>
+                {this.props.match.params.zip_code
+                  ? this.state.selectedCity.city
+                  : this.state.stateName}
+                :
+              </span>
             </h1>
             <div className="location-content">
               <p>
                 Below you can find the general sales tax calculator for{" "}
-                {this.state.selectedCity.city} city for the year 2021. This is a
-                custom and easy to use <Link to="/">sales tax calculator</Link>.
+                {this.props.match.params.zip_code
+                  ? this.state.selectedCity.city
+                  : this.state.stateName}{" "}
+                {this.props.match.params.zip_code ? "city" : "state"} for the
+                year 2021. This is a custom and easy to use{" "}
+                <Link to="/">sales tax calculator</Link>.
               </p>
             </div>
             <form action="" className="sales-tax-form">
@@ -271,15 +298,22 @@ class Calculator extends React.Component {
             </div>
             <div className="calculation-method">
               <div className="sub-heading">
-                Method to calculate {this.state.selectedCity.city} sales tax in
-                2022
+                Method to calculate{" "}
+                {this.props.match.params.zip_code
+                  ? this.state.selectedCity.city
+                  : this.state.stateName}{" "}
+                sales tax in 2022
               </div>
               <div className="sub-context">
                 As we all know, there are different sales tax rates from state
                 to city to your area, and everything combined is the required
-                tax rate. In {this.state.selectedCity.city}, the total sales tax
-                rate is {this.state.rate}. <br />
-                {this.state.rates.length > 0
+                tax rate. In{" "}
+                {this.props.match.params.zip_code
+                  ? this.state.selectedCity.city
+                  : this.state.stateName}
+                , the total sales tax rate is {this.state.rate}
+                % . <br />
+                {this.state.rates.length > 0 && this.props.match.params.zip_code
                   ? this.renderTaxRateInfo(this.state.rates)
                   : ""}
                 <br />
@@ -290,30 +324,70 @@ class Calculator extends React.Component {
             </div>
             <div className="city-info">
               <div className="sub-heading">
-                More About {this.state.selectedCity.city}
+                More About{" "}
+                <a
+                  href={`https://en.wikipedia.org/wiki/${
+                    this.props.match.params.zip_code
+                      ? `${this.state.selectedCity.city},_${this.state.stateName}`
+                      : this.state.stateName
+                  }`}
+                >
+                  {this.props.match.params.zip_code
+                    ? this.state.selectedCity.city
+                    : this.state.stateName}
+                </a>
               </div>
               <div className="sub-context">
-                {this.state.selectedCity.city} city is located in{" "}
-                {this.state.selectedCity.county} county in state{" "}
-                {this.state.stateName} with zip-code :-{" "}
-                {this.state.selectedCity.zip_code}.<br />
-                {this.getPincodes(this.state.selectedCity.city).length > 1
-                  ? `Some cities have multiple zip-codes to distinguish between different areas. ${
-                      this.state.selectedCity.city
-                    } have the following zip-codes : ${this.getPincodes(
-                      this.state.selectedCity.city
-                    ).map((code) => `${" "}${code}`)} `
-                  : ""}
+                {this.props.match.params.zip_code
+                  ? `${this.state.selectedCity.city} city is located in
+                ${this.state.selectedCity.county} county in state
+                ${this.state.stateName} with zip-code :-
+                ${this.state.selectedCity.zip_code}.
+
+                ${
+                  this.getPincodes(this.state.selectedCity.city).length > 1
+                    ? `Some cities have multiple zip-codes to distinguish between different areas. ${
+                        this.state.selectedCity.city
+                      } have the following zip-codes : ${this.getPincodes(
+                        this.state.selectedCity.city
+                      ).map((code) => `${" "}${code}`)}`
+                    : ""
+                }`
+                  : (() => (
+                      <div>
+                        To get more information about {this.state.stateName},{" "}
+                        <a
+                          href={`https://www.${this.state.stateName.replace(
+                            /\s+/g,
+                            ""
+                          )}.gov/`}
+                        >
+                          click here
+                        </a>
+                      </div>
+                    ))()}
               </div>
             </div>
           </div>
         </div>
         {this.state.selectedCity.city ? (
           <Location
-            lat={this.state.selectedCity.latitude}
-            long={this.state.selectedCity.longitude}
-            zip_code={this.state.selectedCity.zip_code}
-            city={this.state.selectedCity.city}
+            lat={
+              this.props.match.params.zip_code
+                ? this.state.selectedCity.latitude
+                : this.state.selectedCity.latitude + 0.01
+            }
+            long={
+              this.props.match.params.zip_code
+                ? this.state.selectedCity.longitude
+                : this.state.selectedCity.longitude + 0.01
+            }
+            city={
+              this.props.match.params.zip_code
+                ? this.state.selectedCity.city
+                : this.state.stateName
+            }
+            placeType={this.props.match.params.zip_code ? "city" : "state"}
           />
         ) : (
           ""
