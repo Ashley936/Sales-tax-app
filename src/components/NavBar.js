@@ -27,61 +27,73 @@ class NavBar extends React.Component {
   }
   render() {
     return (
-      <div className="navbar-wrapper">
-        <div className="nav-icon">
-          <Link to="/">
-            <span>T</span>ax
-          </Link>
-        </div>
-        <div className="content-wrapper">
-          <div className="search-wrapper active">
-            <div className="search-input">
-              <input
-                value={this.state.search}
-                onChange={(e) => {
-                  let results = this.findData(
-                    e.target.value.toLowerCase()
-                  ).slice(0, 20);
-                  if (e.target.value === "") results = [];
-                  this.setState({
-                    search: e.target.value,
-                    results,
-                  });
-                }}
-                type="text"
-                placeholder="Search..."
-                id="mysearch"
-              />
+      <nav>
+        <div className="navbar-wrapper">
+          <div className="nav-icon">
+            <Link to="/">
+              <span>L</span>ogo
+            </Link>
+          </div>
+          <div className="nav-list">
+            <ul>
+              <li>
+                <a href="/">Home</a>
+              </li>
+              <li>
+                <a href="/">Sales Tax Calculator</a>
+              </li>
+            </ul>
+          </div>
+          <div className="content-wrapper">
+            <div className="search-wrapper active">
+              <div className="search-input">
+                <input
+                  value={this.state.search}
+                  onChange={(e) => {
+                    let results = this.findData(
+                      e.target.value.toLowerCase()
+                    ).slice(0, 20);
+                    if (e.target.value === "") results = [];
+                    this.setState({
+                      search: e.target.value,
+                      results,
+                    });
+                  }}
+                  type="text"
+                  placeholder="Search..."
+                  id="mysearch"
+                />
+              </div>
+
+              <div className="search-icon"></div>
             </div>
 
-            <div className="search-icon"></div>
-          </div>
-
-          <ul className="search-result-list">
-            {this.state.results.map((item) => {
-              return (
-                <li
-                  key={item.zip_code}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <Link
-                    to={`/sales-tax-calculator/${item.state}/${item.city}/${item.zip_code}`}
+            <ul className="search-result-list">
+              {this.state.results.map((item) => {
+                return (
+                  <li
+                    key={item.zip_code}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                   >
-                    <div>
-                      <span>
-                        {item.city}, {item.county}({item.state})
-                      </span>
-                      <span>{item.zip_code}</span>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                    <Link
+                      to={`/sales-tax-calculator/${item.state}/${item.city}/${item.zip_code}`}
+                    >
+                      <div>
+                        <span>
+                          {item.city}, {item.county}({item.state})
+                        </span>
+                        <span>{item.zip_code}</span>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }
