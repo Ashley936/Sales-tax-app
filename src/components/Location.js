@@ -12,7 +12,6 @@ class Location extends React.Component {
     const position = [this.props.lat, this.props.long];
     return (
       <MapContainer
-        style={{ width: "100%", height: "80vh" }}
         center={position}
         zoom={this.props.placeType === "city" ? 10 : 5}
       >

@@ -1,116 +1,138 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&display=swap");
 .state-list-wrapper {
   width: 100%;
 }
 
 .state-list-wrapper .main-heading {
   width: 100%;
-  height: 70vh;
-  /* background-color: black; */
-  background-color: #923cb5;
-  background-image: linear-gradient(147deg, #923cb5 0%, #000000 74%);
+  height: 40vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 50px;
 }
 .main-heading div {
-  font-size: 1.8rem;
-  color: white;
+  font-size: 0.7rem;
+  color: black;
   font-family: "Poppins", serif;
-  margin: 20px 0;
+  margin: 18px 0;
+  padding: 0 20px;
 }
 .main-heading div h2 {
   font-weight: 400;
 }
-.main-heading div:first-child {
-  width: 40%;
+.main-heading div h1 {
   font-size: 3.5rem;
-  font-family: "Sansita Swashed", cursive;
+  font-family: "Bitter", serif;
   font-weight: 500;
-  margin-right: 20vw;
-
-  text-align: right;
 }
-/* at 770 px width 100% */
-.state-list {
-  width: 100%;
-  display: flex;
-  margin: auto;
-  background-color: white;
-}
-
-.state-list ol {
-  width: 90%;
-  display: flex;
-  margin: auto;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
-li a {
-  text-decoration: none;
-  color: aliceblue;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-  letter-spacing: 2px;
-}
-
-.state-list li {
+.main-heading ul {
   list-style-type: none;
-  background-color: rgb(45, 1, 75);
-  color: aliceblue;
-  width: 25%;
-  height: 50px;
-  margin: 10px;
-  font-size: 0.8rem;
-
+  color: black;
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.state-list li a {
-  font-family: "Roboto Slab", serif;
+.main-heading ul > li {
+  margin: 0 5px;
+  color: black;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+.main-heading ul a {
+  color: #2b7faf;
+}
+.main-heading form {
+  margin-top: 10px;
+}
+.states-list select,
+.states-list button {
+  padding: 8px 5px 8px 15px;
+  border-radius: 6px;
+  outline: none;
+  background-color: #2b7faf;
+  border: none;
+  color: white;
+  border-right: 14px solid transparent;
+  font-size: 0.95rem;
   letter-spacing: 1px;
-}
-@media screen and (max-width: 827px) {
-  .state-list-wrapper .main-heading {
-    align-items: center;
-  }
-  .main-heading div:first-child {
-    text-align: center;
-  }
-  .state-list li {
-    width: 40%;
-  }
+  text-align: center;
+  margin: 0 5px;
 }
 
-@media screen and (max-width: 624px) {
-  .state-list-wrapper .main-heading {
-    background: white;
-    margin-bottom: 0px;
-    justify-content: space-evenly;
-  }
-  .state-list li {
-    width: 80%;
+.states-list select:hover {
+  background-color: #1178b4;
+  cursor: pointer;
+}
+.states-list select option {
+  background-color: white;
+  color: #2b7faf;
+  padding: 5px;
+}
+
+.states-list button {
+  background: white;
+  color: black;
+  font-weight: 500;
+  border: 2px solid black;
+  padding: 8px 15px;
+  font-size: 1rem;
+  width: auto;
+  transition: all 0.5s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.states-list button svg {
+  margin: 0 0 0 5px;
+  transition: all 0.5s;
+}
+.states-list button:hover {
+  cursor: pointer;
+  padding-right: 25px;
+}
+.states-list button:hover svg {
+  transform: translateX(10px);
+}
+
+.section-two {
+  height: 60vh;
+  width: 100%;
+  background: #2b7faf;
+}
+.section-two .main-heading.white div h1 {
+  color: white;
+  font-weight: 600;
+}
+@media screen and (max-width: 1000px) {
+  .main-heading div h1 {
+    font-size: 3rem;
   }
   .main-heading div {
-    color: black;
-    width: 100%;
+    font-size: 0.65rem;
     text-align: center;
   }
-  .main-heading div:first-child {
-    text-align: center;
-    margin-right: 0;
-    width: 100%;
+}
+@media screen and (max-width: 817px) {
+  .main-heading div h1 {
+    font-size: 2.7rem;
+  }
+  .states-list select {
+    font-size: 0.8rem;
   }
 }
 
-@media screen and (max-width: 512px) {
-  .state-list-wrapper .main-heading {
-    height: 50vh;
+@media screen and (max-width: 470px) {
+  .main-heading div h1 {
+    font-size: 2rem;
   }
-  .main-heading div:first-child {
-    font-size: 3rem;
+  .states-list select {
+    font-size: 0.7rem;
+  }
+  .states-list button {
+    font-size: 0.75rem;
+  }
+  .states-list button svg {
+    width: 15px !important;
   }
 }

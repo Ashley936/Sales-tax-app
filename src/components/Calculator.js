@@ -132,24 +132,80 @@ class Calculator extends React.Component {
     return (
       <>
         <section className="side-page-container">
-          <div
-            className="open-list"
-            onClick={() => {
-              let action = !this.state.showList;
-              var obj = { ...this.state.expand };
-              if (action) {
-                for (var city in obj) {
-                  obj[city] = false;
-                }
-              }
-              this.setState({ showList: action, expand: obj });
-            }}
-          >
-            {this.state.showList ? "SHOW" : "HIDE"} CITIES
-          </div>
-          <aside
-            className={`city-list ${this.state.showList ? "show-list" : ""}`}
-          >
+          <section className="sales-tax-form-container">
+            <h1>
+              {this.props.match.params.zip_code
+                ? this.state.selectedCity.city
+                : this.state.stateName}{" "}
+              Sales Tax Calculator in 2022{" "}
+            </h1>
+            <section className="location-content">
+              <p>
+                Below you can find the general sales tax calculator for{" "}
+                {this.props.match.params.zip_code
+                  ? this.state.selectedCity.city
+                  : this.state.stateName}{" "}
+                {this.props.match.params.zip_code ? "city" : "state"} for the
+                year 2021. This is a custom and easy to use{" "}
+                <Link to="/">sales tax calculator</Link>.
+              </p>
+            </section>
+            <form action="" className="sales-tax-form">
+              <div className="form-heading">Calculate</div>
+              <div>
+                <input
+                  name="principal"
+                  placeholder="amount before tax"
+                  type="number"
+                  value={this.state.principal}
+                  onChange={(e) => this.setState({ principal: e.target.value })}
+                  className="principal"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  name="tax-rate"
+                  placeholder="tax rate"
+                  type="number"
+                  value={this.state.rate}
+                  onChange={(e) => this.setState({ rate: e.target.value })}
+                  className="rate"
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  name="final-amount"
+                  placeholder="amount after tax"
+                  value={this.state.finalAmount}
+                  className="final-amount"
+                  readOnly
+                />
+              </div>
+              <div>
+                <input
+                  name="tax-amount"
+                  placeholder="tax amount"
+                  value={
+                    this.state.finalAmount
+                      ? this.state.finalAmount - this.state.principal
+                      : ""
+                  }
+                  className="tax-amount"
+                  readOnly
+                />
+              </div>
+
+              <button
+                className="calculate-btn"
+                onClick={(e) => this.handleSubmit(e)}
+              >
+                <span>Calculate</span>
+              </button>
+            </form>
+          </section>
+          <section className="city-list show-list">
             <ol>
               <li id="list-heading">More cities from {this.state.stateName}</li>
               {this.unique(this.state.cities, "city")
@@ -176,9 +232,9 @@ class Calculator extends React.Component {
 
                       <div className="min-max-icon">
                         {this.state.expand[item.city] ? (
-                          <span>&#9650;</span>
+                          <span>&laquo;</span>
                         ) : (
-                          <span>&#9660;</span>
+                          <span>&raquo; </span>
                         )}
                       </div>
                     </div>
@@ -221,160 +277,83 @@ class Calculator extends React.Component {
                 +
               </span>
             </div>
-          </aside>
-          <section className="sales-tax-form-container">
-            <h1>
-              Sales Tax for{" "}
-              <span>
-                {this.props.match.params.zip_code
-                  ? this.state.selectedCity.city
-                  : this.state.stateName}
-                :
-              </span>
-            </h1>
-            <section className="location-content">
-              <p>
-                Below you can find the general sales tax calculator for{" "}
+          </section>
+        </section>
+        <section className="sales-tax-form-info sales-tax-form-container">
+          <section className="calculator-info">
+            <div className="sub-heading">
+              <h2>How to use the Sales Tax Calculator ?</h2>
+            </div>
+            <div className="sub-context">
+              <ol>
+                <li key="1">
+                  {" "}
+                  Enter your principal <b>"Amount"</b> in the first input box.
+                </li>
+                <li key="2">
+                  {" "}
+                  Total tax rate for your chosen location is already filled in
+                  the <b>"tax rate"</b> but you can change it to any rate
+                  desired.
+                </li>
+                <li key="3">
+                  That's it. Now click on calculate to get the final amount
+                  (including the tax).
+                </li>
+              </ol>
+            </div>
+          </section>
+          <section className="calculation-method">
+            <div className="sub-heading">
+              <h2>
+                Method to calculate{" "}
                 {this.props.match.params.zip_code
                   ? this.state.selectedCity.city
                   : this.state.stateName}{" "}
-                {this.props.match.params.zip_code ? "city" : "state"} for the
-                year 2021. This is a custom and easy to use{" "}
-                <Link to="/">sales tax calculator</Link>.
+                sales tax in 2022
+              </h2>
+            </div>
+            <div className="sub-context">
+              <p>
+                As we all know, there are different sales tax rates from state
+                to city to your area, and everything combined is the required
+                tax rate. In{" "}
+                {this.props.match.params.zip_code
+                  ? this.state.selectedCity.city
+                  : this.state.stateName}
+                , the total sales tax rate is {this.state.rate}% .{" "}
               </p>
-            </section>
-            <form action="" className="sales-tax-form">
-              <div>
-                <label for="principal">amount before tax</label>
-                <input
-                  name="principal"
-                  placeholder="principal"
-                  type="number"
-                  value={this.state.principal}
-                  onChange={(e) => this.setState({ principal: e.target.value })}
-                  className="principal"
-                  required
-                />
-              </div>
-              <div>
-                <label for="tax-rate">tax-rate</label>
-                <input
-                  name="tax-rate"
-                  placeholder="tax-rate"
-                  type="number"
-                  value={this.state.rate}
-                  onChange={(e) => this.setState({ rate: e.target.value })}
-                  className="rate"
-                  required
-                />
-              </div>
-              <div>
-                <label for="final-amount">amount after tax</label>
-                <input
-                  name="final-amount"
-                  placeholder="final-amount"
-                  value={this.state.finalAmount}
-                  className="final-amount"
-                  readOnly
-                />
-              </div>
-              <div>
-                <label for="tax-amount">tax-amount</label>
-                <input
-                  name="tax-amount"
-                  placeholder="tax-amount"
-                  value={
-                    this.state.finalAmount
-                      ? this.state.finalAmount - this.state.principal
-                      : ""
-                  }
-                  className="final-amount"
-                  readOnly
-                />
-              </div>
-
-              <button
-                className="calculate-btn"
-                onClick={(e) => this.handleSubmit(e)}
-              >
-                <span>Calculate</span>
-              </button>
-            </form>
-            <section className="calculator-info">
-              <div className="sub-heading">
-                <h2>How to use the Sales Tax Calculator ?</h2>
-              </div>
-              <div className="sub-context">
-                <ol>
-                  <li key="1">
-                    {" "}
-                    Enter your principal <b>"Amount"</b> in the first input box.
-                  </li>
-                  <li key="2">
-                    {" "}
-                    Total tax rate for your chosen location is already filled in
-                    the <b>"tax rate"</b> but you can change it to any rate
-                    desired.
-                  </li>
-                  <li key="3">
-                    That's it. Now click on calculate to get the final amount
-                    (including the tax).
-                  </li>
-                </ol>
-              </div>
-            </section>
-            <section className="calculation-method">
-              <div className="sub-heading">
-                <h2>
-                  Method to calculate{" "}
-                  {this.props.match.params.zip_code
-                    ? this.state.selectedCity.city
-                    : this.state.stateName}{" "}
-                  sales tax in 2022
-                </h2>
-              </div>
-              <div className="sub-context">
-                <p>
-                  As we all know, there are different sales tax rates from state
-                  to city to your area, and everything combined is the required
-                  tax rate. In{" "}
+              <p>
+                {this.state.rates.length > 0 && this.props.match.params.zip_code
+                  ? this.renderTaxRateInfo(this.state.rates)
+                  : ""}
+                <br />
+                The Sales tax rates may differ depending on the type of
+                purchase. Usually it includes rentals, lodging, consumer
+                purchases, sales, etc.
+              </p>
+            </div>
+          </section>
+          <section className="city-info">
+            <div className="sub-heading">
+              <h2>
+                More About{" "}
+                <a
+                  href={`https://en.wikipedia.org/wiki/${
+                    this.props.match.params.zip_code
+                      ? `${this.state.selectedCity.city},_${this.state.stateName}`
+                      : this.state.stateName
+                  }`}
+                >
                   {this.props.match.params.zip_code
                     ? this.state.selectedCity.city
                     : this.state.stateName}
-                  , the total sales tax rate is {this.state.rate}% .{" "}
-                </p>
-                <p>
-                  {this.state.rates.length > 0 &&
-                  this.props.match.params.zip_code
-                    ? this.renderTaxRateInfo(this.state.rates)
-                    : ""}
-                  <br />
-                  The Sales tax rates may differ depending on the type of
-                  purchase. Usually it includes rentals, lodging, consumer
-                  purchases, sales, etc.
-                </p>
-              </div>
-            </section>
-            <section className="city-info">
-              <div className="sub-heading">
-                <h2>
-                  More About{" "}
-                  <a
-                    href={`https://en.wikipedia.org/wiki/${
-                      this.props.match.params.zip_code
-                        ? `${this.state.selectedCity.city},_${this.state.stateName}`
-                        : this.state.stateName
-                    }`}
-                  >
-                    {this.props.match.params.zip_code
-                      ? this.state.selectedCity.city
-                      : this.state.stateName}
-                  </a>
-                </h2>
-              </div>
-              <div className="sub-context">
-                {this.props.match.params.zip_code
-                  ? `${this.state.selectedCity.city} city is located in
+                </a>
+              </h2>
+            </div>
+            <div className="sub-context">
+              {this.props.match.params.zip_code
+                ? `${this.state.selectedCity.city} city is located in
                 ${this.state.selectedCity.county} county in state
                 ${this.state.stateName} with zip-code :-
                 ${this.state.selectedCity.zip_code}.
@@ -388,24 +367,30 @@ class Calculator extends React.Component {
                       ).map((code) => `${" "}${code}`)}`
                     : ""
                 }`
-                  : (() => (
-                      <div>
-                        To get more information about {this.state.stateName},{" "}
-                        <a
-                          href={`https://www.${this.state.stateName.replace(
-                            /\s+/g,
-                            ""
-                          )}.gov/`}
-                        >
-                          click here
+                : (() => (
+                    <div>
+                      To get more information about {this.state.stateName},{" "}
+                      <a
+                        href={`https://www.${this.state.stateName.replace(
+                          /\s+/g,
+                          ""
+                        )}.gov/`}
+                      >
+                        click here
+                      </a>
+                      <p>
+                        Checkout Official state taxes from{" "}
+                        <a href="https://www.salestaxinstitute.com/resources/rates">
+                          here.
                         </a>
-                      </div>
-                    ))()}
-              </div>
-            </section>
+                      </p>
+                    </div>
+                  ))()}
+            </div>
           </section>
         </section>
-        <section>
+        <section className="location">
+          <h1>Location: </h1>
           {this.state.selectedCity.city ? (
             <Location
               lat={
