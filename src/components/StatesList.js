@@ -78,9 +78,15 @@ class StatesList extends React.Component {
           </form>
         </div>
         <section className="section-two">
-          <div className="main-heading white">
+          <div className="section-heading white">
             <div>
-              <h1>Lorem Ipsum</h1>
+              <h1>Featured on: </h1>
+            </div>
+            <div className="icon-group">
+              <div className="icon one"></div>
+              <div className="icon two"></div>
+              <div className="icon three"></div>
+              <div className="icon four"></div>
             </div>
           </div>
         </section>

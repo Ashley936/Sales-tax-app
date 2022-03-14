@@ -96,13 +96,57 @@
 }
 
 .section-two {
-  height: 60vh;
   width: 100%;
   background: #2b7faf;
+  margin: 40px 0 30vh 0;
+  padding: 20px;
 }
-.section-two .main-heading.white div h1 {
+.section-two .section-heading.white div h1 {
   color: white;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 3rem;
+  text-align: center;
+  margin: 40px;
+}
+.icon-group {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.icon {
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 20px;
+}
+.icon.one {
+  /* kindpng_5378671 1 */
+
+  width: 275px;
+  height: 39px;
+
+  background-image: url(../public/kindpng_5378671\ 1.png);
+}
+
+.icon.two {
+  /* image 1 */
+
+  width: 179px;
+  height: 57px;
+  background-image: url(../public/image\ 1.png);
+}
+.icon.three {
+  width: 358px;
+  height: 134px;
+
+  background-image: url(../public/image\ 2.png);
+}
+.icon.four {
+  width: 242px;
+  height: 67px;
+
+  background-image: url(../public/image\ 3.png);
 }
 @media screen and (max-width: 1000px) {
   .main-heading div h1 {
