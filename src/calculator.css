@@ -1,12 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap");
-
+a {
+  color: #2b7faf;
+}
 .side-page-container {
   display: flex;
-  font-family: "Roboto Slab", serif;
+  font-family: "Poppins", serif;
   justify-content: space-evenly;
-  padding: 0 10%;
+  padding: 0 3% 0 7%;
+  align-items: flex-end;
 }
 .hide {
   display: none !important;
@@ -20,17 +20,27 @@
   flex-direction: column;
   justify-content: space-evenly;
   padding: 10px;
-  width: 40%;
+  width: 30%;
+  max-width: 300px;
   border: 1px solid lightgray;
   border-radius: 5px;
-  margin: 30px 0;
+  margin-top: 30px;
 }
 
 .city-list ol {
-  min-height: 80vh;
   overflow-y: auto;
 }
-
+.city-list ol::-webkit-scrollbar {
+  width: 5px;
+}
+.city-list ol::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+.city-list ol::-webkit-scrollbar-thumb {
+  background-color: #2b7faf;
+  outline: 1px solid #2b7faf;
+  border-radius: 2px;
+}
 #list-heading {
   font-size: 1rem;
   font-weight: 600;
@@ -44,7 +54,7 @@
   font-size: 20px;
   cursor: pointer;
   font-size: 1rem;
-  font-family: "Poppins";
+  font-family: "Poppins", serif;
 }
 
 .main-list-item {
@@ -60,15 +70,19 @@
 }
 .list-item-name a {
   color: black;
-  font-family: "Roboto Slab", serif;
 }
 .min-max-icon {
-  margin: 0 10px;
+  margin: 10px;
+  transform: rotate(90deg);
+}
+.min-max-icon span {
+  font-size: 1.2rem;
 }
 .sub-list {
   width: 100%;
   font-weight: 400;
   font-size: 22px;
+  background: #d6edfa;
 }
 .sub-list li a {
   width: 100%;
@@ -80,59 +94,47 @@
 .sub-list li:hover a {
   color: white;
 }
-.pagination-controls {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  font-size: 1.3rem;
-}
-
-.pagination-controls span {
-  cursor: pointer;
-}
-.pagination-controls span {
-  padding: 0 6px;
-  margin: 0 5px;
-  color: #232323;
-}
 
 /* /////////////////// Calculator part ////////////////////// */
 .sales-tax-form-container {
-  padding: 30px 20px;
+  padding: 0 40px 0 0;
   display: flex;
   flex-direction: column;
+  max-width: 60%;
+  height: 95vh;
+  justify-content: space-between;
 }
-.sales-tax-form-container > * {
-  margin: 20px;
+
+.sales-tax-form-info > * {
+  margin-top: 20px;
   line-height: 150%;
 }
 .sub-heading h2 {
+  font-family: "Bitter";
   font-size: 1.7rem;
   line-height: 130%;
   margin: 10px 0;
-  font-weight: 600;
+  font-weight: 500;
+}
+.sales-tax-form-container {
+  height: 95vh;
 }
 .sales-tax-form-container h1 {
-  font-size: 3rem;
-}
-.sales-tax-form-container h1 span {
-  font-size: 4rem;
-  font-family: "Sansita Swashed", cursive;
+  font-size: 2.5rem;
+  font-family: "Bitter", cursive;
+  font-weight: 600;
 }
 .sales-tax-form-container form {
-  margin: 3vh auto;
-  padding: 3vh;
-  min-width: 300px;
-  min-height: 300px;
-  width: 80%;
+  padding: 5%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   border: 1px solid lightgray;
 }
 .sales-tax-form-container form div {
-  width: 80%;
+  width: 90%;
   min-width: 200px;
 }
 .form-heading {
@@ -141,14 +143,14 @@
   font-weight: 600;
 }
 .sales-tax-form-container form button {
-  margin: 10px 0;
+  margin: 10px 5px;
   width: 150px;
 }
 .sales-tax-form-container form input {
   font-size: 14px;
   height: 30px;
   width: 100%;
-  padding: 18px 12px;
+  padding: 20px 24px;
   border: 1px solid lightgray;
   margin: 0;
   margin: 5px;
@@ -171,6 +173,7 @@
   line-height: 42px;
   padding: 0;
   border: none;
+  border-radius: 5px;
 }
 
 .calculate-btn span {
@@ -237,16 +240,17 @@
 }
 .sales-tax-form-info {
   font-family: "Poppins", serif;
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 0 10%;
-  padding: 0;
+  padding: 30px;
 }
 
 .sales-tax-form-info > * {
   width: 40%;
-  min-width: 200px;
+  min-width: 250px;
 }
 .sub-context {
   margin: 15px 0;
@@ -256,14 +260,17 @@
 .location {
   width: 100%;
   background: #2b7faf;
-  height: 80vh;
-  padding: 20px;
+  height: 70vh;
+  min-height: 400px;
+  padding: 50px 0;
 }
 .location h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: white;
   text-align: center;
   margin: 0;
+  font-family: "Bitter", serif;
+  font-weight: 600;
 }
 .leaflet-container {
   top: 15%;
@@ -283,13 +290,19 @@
     flex-wrap: wrap;
   }
   .city-list {
-    width: 80%;
+    width: 100%;
+    margin: 30px 40px 30px 0;
+    padding-left: 5%;
+    padding-top: 5%;
+  }
+  .sales-tax-form-container,
+  .city-list {
+    max-width: 100%;
   }
   .sales-tax-form-container h1 {
     font-size: 2.5rem;
-  }
-  .sales-tax-form-info {
-    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
   }
 }
 
@@ -304,11 +317,10 @@
   }
 }
 @media screen and (max-width: 480px) {
-  .side-page-container {
-    padding: 0%;
-  }
   .sales-tax-form-info {
     margin: 0 5%;
+    padding: 0;
+    justify-content: space-around;
   }
   .leaflet-container {
     left: 5%;

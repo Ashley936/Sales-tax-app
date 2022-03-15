@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../navbar.css";
 class NavBar extends React.Component {
-  state = { search: "", results: [] };
+  state = { search: "", results: [], isChecked: false };
   findData = (inputValue) => {
     const newArr = this.props.allData.filter((place) => {
       return (
@@ -70,9 +70,31 @@ class NavBar extends React.Component {
                 </clipPath>
               </defs>
             </svg>
+            <div className="nav-list">
+              <ul>
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  <a href="/">Sales Tax Calculator</a>
+                </li>
+              </ul>
+            </div>
           </div>
           <div id="menuToggle">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                if (e.target.checked) {
+                  window.onscroll = function () {
+                    window.scrollTo(0, 0);
+                  };
+                } else {
+                  window.onscroll = function () {};
+                }
+                this.setState({ isChecked: e.target.checked });
+              }}
+            />
 
             <span></span>
             <span></span>
@@ -93,16 +115,7 @@ class NavBar extends React.Component {
               </a>
             </ul>
           </div>
-          <div className="nav-list">
-            <ul>
-              <li>
-                <a href="/">Home</a>
-              </li>
-              <li>
-                <a href="/">Sales Tax Calculator</a>
-              </li>
-            </ul>
-          </div>
+
           <div className="content-wrapper">
             <div className="search-wrapper active">
               <input
@@ -133,6 +146,7 @@ class NavBar extends React.Component {
                     onClick={(e) => {
                       e.stopPropagation();
                       this.setState({ search: "", results: [] });
+                      this.props.setCode(item.zip_code);
                     }}
                   >
                     <Link

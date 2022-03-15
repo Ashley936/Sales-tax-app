@@ -9,7 +9,7 @@ import ScrollToTop from "./ScrollToTop";
 import Footer from "./Footer";
 
 class App extends React.Component {
-  state = { US: [], allData: [] };
+  state = { US: [], allData: [], zip_code: "" };
   componentDidMount() {
     axios
       .get(
@@ -33,7 +33,10 @@ class App extends React.Component {
       <>
         <BrowserRouter>
           <ScrollToTop />
-          <NavBar allData={this.state.allData} />
+          <NavBar
+            allData={this.state.allData}
+            setCode={(code) => this.setState({ zip_code: code })}
+          />
           <Routes>
             <Route exact path="/" element={<StatesList US={this.state.US} />} />
             <Route
@@ -58,6 +61,7 @@ class App extends React.Component {
                   <Calculator
                     cities={this.state.allData}
                     stateNames={this.state.US}
+                    zip_code={this.state.zip_code}
                   />
                 ) : (
                   ""

@@ -23,7 +23,6 @@ class Calculator extends React.Component {
     rates: [],
     principal: "",
     finalAmount: "",
-    n: 0,
     expand: {},
     showList: true,
   };
@@ -208,78 +207,39 @@ class Calculator extends React.Component {
           <section className="city-list show-list">
             <ol>
               <li id="list-heading">More cities from {this.state.stateName}</li>
-              {this.unique(this.state.cities, "city")
-                .slice(
-                  this.state.n === -1 ? 0 : this.state.n,
-                  this.state.n === -1
-                    ? this.state.cities.length
-                    : this.state.n + 10
-                )
-                .map((item) => (
-                  <li className="main-list-item" key={item.city}>
-                    <div
-                      className="list-item-name"
-                      onClick={(e) => {
-                        var obj = { ...this.state.expand };
+              {this.unique(this.state.cities, "city").map((item) => (
+                <li className="main-list-item" key={item.city}>
+                  <div
+                    className="list-item-name"
+                    onClick={(e) => {
+                      var obj = { ...this.state.expand };
 
-                        this.state.expand[item.city]
-                          ? (obj[item.city] = false)
-                          : (obj[item.city] = true);
-                        this.setState({ expand: obj });
-                      }}
-                    >
-                      {item.city}
+                      this.state.expand[item.city]
+                        ? (obj[item.city] = false)
+                        : (obj[item.city] = true);
+                      this.setState({ expand: obj });
+                    }}
+                  >
+                    {item.city}
 
-                      <div className="min-max-icon">
-                        {this.state.expand[item.city] ? (
-                          <span>&laquo;</span>
-                        ) : (
-                          <span>&raquo; </span>
-                        )}
-                      </div>
+                    <div className="min-max-icon">
+                      {this.state.expand[item.city] ? (
+                        <span>&laquo;</span>
+                      ) : (
+                        <span>&raquo; </span>
+                      )}
                     </div>
+                  </div>
 
-                    {this.state.expand[item.city]
-                      ? this.setInnerHtml(this.getPincodes(item.city), item)
-                      : ""}
-                  </li>
-                ))}
+                  {this.state.expand[item.city]
+                    ? this.setInnerHtml(this.getPincodes(item.city), item)
+                    : ""}
+                </li>
+              ))}
             </ol>
-            <div className="pagination-controls">
-              {" "}
-              <span
-                className={`controls ${this.state.n === -1 ? "hide" : ""}`}
-                onClick={() =>
-                  this.state.n > 0
-                    ? this.setState({ n: this.state.n - 10 })
-                    : ""
-                }
-              >
-                -
-              </span>
-              <span
-                onClick={() => {
-                  let n = this.state.n === -1 ? 0 : -1;
-                  this.setState({ n });
-                }}
-              >
-                {this.state.n === -1 ? "Show Less" : "Show all"}{" "}
-              </span>
-              <span
-                className={`controls ${this.state.n === -1 ? "hide" : ""}`}
-                onClick={() =>
-                  this.state.n + 10 <
-                  this.unique(this.state.cities, "city").length
-                    ? this.setState({ n: this.state.n + 10 })
-                    : ""
-                }
-              >
-                +
-              </span>
-            </div>
           </section>
         </section>
-        <section className="sales-tax-form-info sales-tax-form-container">
+        <section className="sales-tax-form-info">
           <section className="calculator-info">
             <div className="sub-heading">
               <h2>How to use the Sales Tax Calculator ?</h2>
@@ -390,7 +350,7 @@ class Calculator extends React.Component {
           </section>
         </section>
         <section className="location">
-          <h1>Location: </h1>
+          <h1>Location </h1>
           {this.state.selectedCity.city ? (
             <Location
               lat={

@@ -54,19 +54,37 @@ class Footer extends React.Component {
         </div>
         <div className="footer-info">
           <div>
-            <div>Lorem ipsum</div>
-            <div>home</div>
-            <div>contact</div>
-            <div>ocnodon</div>
-            <div>offivial</div>
-            <div>ajsbugu</div>
-          </div>
-          <div>
-            <div>Lorem ipsum</div>
-            <div>iabsiabisi</div>
-            <div>elit</div>
-            <div>lordo</div>
-            <div>Losum</div>
+            <div>Useful links</div>
+            <div>
+              <a href="/">Home</a>
+            </div>
+            <div>
+              <a href="/" alt="">
+                Sales tax calculator
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://www.salestaxinstitute.com/resources/rates"
+                alt=""
+              >
+                Official sales tax website
+              </a>
+            </div>
+            <div>
+              <a href="https://en.wikipedia.org/wiki/U.S._state" alt="">
+                List of US states
+              </a>
+            </div>
+
+            <div>
+              <a
+                href="https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population"
+                alt=""
+              >
+                List of US cities
+              </a>
+            </div>
           </div>
         </div>
       </footer>

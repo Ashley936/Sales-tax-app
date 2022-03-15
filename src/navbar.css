@@ -4,19 +4,27 @@
   padding: 0;
   box-sizing: border-box;
 }
-body {
+#root {
   overflow-x: hidden;
 }
+.nav-icon {
+  display: flex;
+  align-items: center;
+}
 .nav-icon svg {
-  width: 100%;
-  height: 100px;
+  width: 160px;
+  height: 80px;
   min-width: 100px;
+  overflow-x: hidden;
+  position: relative;
+  top: 6px;
 }
 a {
   text-decoration: none;
 }
 .navbar-wrapper {
-  padding: 0 30px;
+  padding: 10px 30px;
+  margin-bottom: 30px;
   background-color: white;
   display: flex;
   align-items: center;
@@ -28,7 +36,7 @@ a {
 .content-wrapper {
   width: 30%;
   max-width: 300px;
-  height: 34px;
+  height: 30px;
   position: relative;
 }
 .search-wrapper {
@@ -39,8 +47,8 @@ a {
   box-shadow: 0 0 0 0 5px #2573ef;
 }
 .search-wrapper .search-icon {
-  top: 10px;
-  right: 10px;
+  top: 7px;
+  right: 12px;
   width: 20px;
   height: 20px;
   display: flex;
@@ -55,8 +63,8 @@ a {
 
 .search-wrapper .search-icon:before {
   content: "";
-  width: 16px;
-  height: 16px;
+  width: 10px;
+  height: 10px;
   position: absolute;
   border-radius: 50%;
   border: 2px solid black;
@@ -66,36 +74,36 @@ a {
 .search-wrapper .search-icon:after {
   content: "";
   width: 2px;
-  height: 7px;
+  height: 5px;
   position: absolute;
   background: black;
-  transform: translate(5px, 3px) rotate(315deg);
+  transform: translate(3px, 3px) rotate(315deg);
 }
 
 .search-wrapper input {
   top: 0;
   width: 100%;
   height: 100%;
-  font-size: 18px;
+  font-size: 13px;
   position: relative;
   border-radius: 10px;
-  border: 1px solid;
-  padding: 0 5px;
+  border: 1px solid #232323;
+  padding: 5px 13px;
   outline: none;
+  letter-spacing: 1px;
 }
 .search-result-list {
   position: absolute;
   width: 90%;
-  max-height: 90vh;
+  max-height: 70vh;
   overflow-y: scroll;
   top: 101%;
   left: 10px;
   list-style-type: none;
-  background: #f9f9f9;
+  background: white;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
   z-index: 99;
 }
-
 .search-result-list li {
   padding: 15px;
   cursor: pointer;
@@ -105,15 +113,27 @@ a {
 }
 
 .search-result-list li:hover {
-  box-shadow: 0 0 0 2px #2b7faf inset;
+  box-shadow: 0 0 1px 1px #2b7faf inset;
 }
 .search-result-list li div {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1rem;
-  font-family: "Roboto Slab", serif;
+  font-size: 0.8rem;
+  font-family: "Poppins", serif;
+  font-weight: 400;
   color: black;
+}
+.search-result-list::-webkit-scrollbar {
+  width: 5px;
+}
+.search-result-list::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+.search-result-list::-webkit-scrollbar-thumb {
+  background-color: #2b7faf;
+  outline: 1px solid #2b7faf;
+  border-radius: 2px;
 }
 .nav-list ul {
   display: flex;
@@ -124,11 +144,10 @@ a {
 }
 
 .nav-list ul li a {
-  padding: 5px 20px;
+  padding: 5px 10px 5px 20px;
   font-weight: 500;
   color: black;
   font-family: "Poppins", sans-serif;
-  font-weight: 500;
 }
 .nav-list ul li a:hover {
   color: #2b7faf;
@@ -164,7 +183,7 @@ footer .logo-container {
 footer .logo-container > * {
   margin: 20px 0;
   font-family: "Poppins";
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 footer .footer-info {
@@ -174,17 +193,29 @@ footer .footer-info {
   display: flex;
   justify-content: space-evenly;
 }
-footer .footer-info div > * {
+.footer-info > div {
+  margin: 20px 0;
+  height: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+footer .footer-info div > * a,
+footer .footer-info > div > :first-child {
   margin: 10px 0;
   font-family: "Poppins";
-  cursor: pointer;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  font-weight: 200;
+  color: white;
 }
-footer .footer-info div > :first-child {
-  font-size: 1.2rem;
-  font-weight: 600;
+footer .footer-info > div > :first-child {
+  font-size: 1rem;
+  font-weight: 400;
 }
-footer .footer-info div > *:hover {
+footer .footer-info div > * a:hover {
   color: #2b7faf;
+  cursor: pointer;
 }
 @media screen and (max-width: 700px) {
   footer {
@@ -251,8 +282,8 @@ footer .footer-info div > *:hover {
 
 #menuToggle span {
   display: block;
-  width: 27px;
-  height: 4px;
+  width: 21px;
+  height: 2px;
   margin-bottom: 5px;
   position: relative;
 
@@ -293,11 +324,12 @@ footer .footer-info div > *:hover {
 #menu {
   position: absolute;
   width: 300px;
+  height: 110vh;
   margin: -100px 0 0 -50px;
   padding: 50px;
   padding-top: 125px;
 
-  background: #232323;
+  background: white;
   list-style-type: none;
   -webkit-font-smoothing: antialiased;
   /* to stop flickering of text in safari */
@@ -310,9 +342,10 @@ footer .footer-info div > *:hover {
 
 #menu li {
   padding: 10px 0;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Poppins", serif;
-  color: white;
+  color: black;
+  font-weight: 500;
 }
 
 #menuToggle input:checked ~ ul {
@@ -328,50 +361,55 @@ footer .footer-info div > *:hover {
     display: none;
   }
 
-  .nav-list,
-  .search-wrapper {
+  .nav-list {
     display: block;
-    position: relative;
-    top: -10px;
   }
 }
 @media screen and (max-width: 800px) {
   .content-wrapper {
-    display: block;
-    position: relative;
-    top: 10px;
+    top: 13px;
     right: 50px;
   }
   .search-wrapper input {
     font-size: 12px;
   }
   #menuToggle {
-    top: 10px;
+    top: 15px;
     left: 53%;
     z-index: 9999;
   }
   .search-wrapper .search-icon::before {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
   }
   .search-wrapper .search-icon::after {
-    transform: translate(5px, 2px) rotate(315deg);
+    transform: translate(3px, 2px) rotate(315deg);
   }
   .nav-icon {
     height: 60px;
-    width: 150px;
+    width: 120px;
     position: relative;
-    top: -10px;
+    top: 10px;
+  }
+  .search-result-list li a div {
+    font-size: 0.85rem;
+  }
+  .search-result-list {
+    width: 120%;
+    left: -10%;
+  }
+  .search-result-list::-webkit-scrollbar {
+    width: 2px;
   }
 }
 
 @media screen and (max-width: 500px) {
   .nav-icon {
     height: 50px;
-    width: 120px;
+    width: 100px;
     position: relative;
-    top: -10px;
-    left: -10px;
+    top: 10px;
+    left: 10px;
   }
   .search-wrapper .search-icon {
     display: none;
@@ -380,18 +418,17 @@ footer .footer-info div > *:hover {
     height: 25px;
     width: 150px;
   }
-  .search-result-list {
-    width: 120%;
-    left: -10%;
+
+  .search-result-list li a div {
+    font-size: 0.75rem;
   }
 }
 
 @media screen and (max-width: 420px) {
   .nav-icon {
     height: 40px;
-    width: 100px;
+    width: 80px;
     position: relative;
-    top: -17px;
     left: -13px;
   }
 }
