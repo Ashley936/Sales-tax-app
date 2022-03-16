@@ -146,11 +146,10 @@ class NavBar extends React.Component {
                     onClick={(e) => {
                       e.stopPropagation();
                       this.setState({ search: "", results: [] });
-                      this.props.setCode(item.zip_code);
                     }}
                   >
-                    <Link
-                      to={`/sales-tax-calculator/${item.state}/${item.city}/${item.zip_code}`}
+                    <a
+                      href={`/sales-tax-calculator/${item.state}/${item.city}/${item.zip_code}`}
                     >
                       <div>
                         <span>
@@ -158,7 +157,7 @@ class NavBar extends React.Component {
                         </span>
                         <span>{item.zip_code}</span>
                       </div>
-                    </Link>
+                    </a>
                   </li>
                 );
               })}

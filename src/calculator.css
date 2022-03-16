@@ -313,7 +313,10 @@ a {
     margin: 20px;
   }
 }
-
+.more-wiki-info {
+  color: #2b7faf;
+  cursor: pointer;
+}
 @media screen and (max-width: 769px) {
   .sales-tax-form-info > * {
     width: 80%;

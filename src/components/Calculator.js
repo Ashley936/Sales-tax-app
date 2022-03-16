@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -25,6 +26,7 @@ class Calculator extends React.Component {
     finalAmount: "",
     expand: {},
     showList: true,
+    wikiInfo: "",
   };
 
   updateDetails = () => {
@@ -77,6 +79,7 @@ class Calculator extends React.Component {
       let rate = this.props.match.params.zip_code
         ? res.data.totalRate
         : res.data.rates.find((item) => item.type === "State").rate;
+      console.log(res.data);
       this.setState({ rate: rate * 100, rates: res.data.rates });
     });
   };
@@ -127,7 +130,23 @@ class Calculator extends React.Component {
       )}`;
     }
   };
+  getWikiInfo = (word, target) => {
+    axios
+      .get(
+        `https://en.wikipedia.org/w/api.php?action=query&titles=${word}&prop=extracts&format=json&exintro=1&origin=*`
+      )
+      .then((res) => {
+        let reqText = Object.values(res.data.query.pages)[0].extract.slice(
+          0,
+          500
+        );
+        target.innerHTML =
+          reqText +
+          `<span><a href="https://en.wikipedia.org/wiki/${word}">...more</a></span>`;
+      });
+  };
   render() {
+    console.log(this.state);
     return (
       <>
         <section className="side-page-container">
@@ -140,13 +159,15 @@ class Calculator extends React.Component {
             </h1>
             <section className="location-content">
               <p>
-                Below you can find the general sales tax calculator for{" "}
+                Checkout the latest{" "}
                 {this.props.match.params.zip_code
-                  ? this.state.selectedCity.city
+                  ? this.state.selectedCity.city + ", " + this.state.stateName
                   : this.state.stateName}{" "}
-                {this.props.match.params.zip_code ? "city" : "state"} for the
-                year 2021. This is a custom and easy to use{" "}
-                <Link to="/">sales tax calculator</Link>.
+                {this.props.match.params.zip_code
+                  ? "(" + this.props.match.params.zip_code + ") "
+                  : ""}
+                <Link to="/">sales tax calculator</Link> of 2022 with updated
+                sales tax rates.
               </p>
             </section>
             <form action="" className="sales-tax-form">
@@ -242,7 +263,16 @@ class Calculator extends React.Component {
         <section className="sales-tax-form-info">
           <section className="calculator-info">
             <div className="sub-heading">
-              <h2>How to use the Sales Tax Calculator ?</h2>
+              <h2>
+                How to use the Sales Tax Calculator for{" "}
+                {this.props.match.params.zip_code
+                  ? this.state.selectedCity.city + ", " + this.state.stateName
+                  : this.state.stateName}{" "}
+                {this.props.match.params.zip_code
+                  ? "(" + this.props.match.params.zip_code + ") "
+                  : ""}
+                ?
+              </h2>
             </div>
             <div className="sub-context">
               <ol>
@@ -338,14 +368,27 @@ class Calculator extends React.Component {
                       >
                         click here
                       </a>
-                      <p>
-                        Checkout Official state taxes from{" "}
-                        <a href="https://www.salestaxinstitute.com/resources/rates">
-                          here.
-                        </a>
-                      </p>
                     </div>
                   ))()}
+              <p>
+                Checkout Official state taxes from{" "}
+                <a href="https://www.salestaxinstitute.com/resources/rates">
+                  here.
+                </a>
+              </p>
+              <p
+                className="more-wiki-info"
+                onClick={(e) => {
+                  let word = this.props.match.params.zip_code
+                    ? `${this.state.selectedCity.city},_${this.state.stateName}`
+                    : this.state.stateName;
+
+                  this.getWikiInfo(word, e.target);
+                }}
+              >
+                {" "}
+                More info &gt;&gt;{" "}
+              </p>
             </div>
           </section>
         </section>
