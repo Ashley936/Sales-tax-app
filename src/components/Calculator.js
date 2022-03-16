@@ -143,6 +143,7 @@ class Calculator extends React.Component {
         target.innerHTML =
           reqText +
           `<span><a href="https://en.wikipedia.org/wiki/${word}">...more</a></span>`;
+        target.onClick = () => {};
       });
   };
   render() {
