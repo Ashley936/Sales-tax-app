@@ -323,7 +323,7 @@ class StatesList extends React.Component {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g clip-path="url(#clip0_170_55)">
+                  <g clipPath="url(#clip0_170_55)">
                     <path
                       d="M34 23V46.1L43.3 45.8L52.5 45.5V31.7V18H150.3H248V32V46H257.5H267V23V7.62939e-06H150.5H34V23Z"
                       fill="white"

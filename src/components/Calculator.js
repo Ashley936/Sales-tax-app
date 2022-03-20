@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import taxRate from "../api/taxRate";
 import "../calculator.css";
 import Location from "./Location";
+import unsplash from "../api/unsplash";
 
 function withRouter(Children) {
   return (props) => {
@@ -17,6 +18,7 @@ function withRouter(Children) {
 class Calculator extends React.Component {
   _isMounted = false;
   state = {
+    images: "",
     cities: [],
     selectedCity: {},
     stateName: "",
@@ -49,6 +51,7 @@ class Calculator extends React.Component {
     }
 
     this.getTaxRate(selectedCity.zip_code);
+    this.searchImage(stateInfo.name);
     return { cities, selectedCity, stateName: stateInfo.name };
   };
   componentDidMount() {
@@ -103,7 +106,7 @@ class Calculator extends React.Component {
             <Link
               to={`/sales-tax-calculator/${cityInfo.state}/${cityInfo.city}/${item}`}
             >
-              <div>{item}</div>
+              <h3>{item}</h3>
             </Link>
           </li>
         ))}
@@ -146,8 +149,21 @@ class Calculator extends React.Component {
         target.onClick = () => {};
       });
   };
+  async searchImage(term) {
+    const res = await unsplash.get("/collections/AliqCPBcHpg/photos", {
+      params: { page: 1, per_page: 50 },
+    });
+    let x = Math.floor(Math.random() * 10 + 1);
+    let n = res.data.findIndex((item) =>
+      item.description
+        ? item.description.includes(this.props.match.params.state)
+        : null
+    );
+    if (n === -1) n = x;
+    let images = res.data[n].urls.regular;
+    this.setState({ images });
+  }
   render() {
-    console.log(this.state);
     return (
       <>
         <section className="side-page-container">
@@ -337,7 +353,11 @@ class Calculator extends React.Component {
                   }`}
                 >
                   {this.props.match.params.zip_code
-                    ? this.state.selectedCity.city
+                    ? this.state.selectedCity.city +
+                      " " +
+                      "(" +
+                      this.props.match.params.zip_code +
+                      ")"
                     : this.state.stateName}
                 </a>
               </h2>
@@ -391,7 +411,19 @@ class Calculator extends React.Component {
                 More info &gt;&gt;{" "}
               </p>
             </div>
+            <section className="city-img">
+              <img
+                src={this.state.images}
+                alt={`${this.state.stateName} state`}
+              />
+              <p>
+                {this.props.match.params.zip_code
+                  ? `${this.state.selectedCity.city} (${this.props.match.params.zip_code}) from ${this.state.stateName}`
+                  : this.state.stateName}
+              </p>
+            </section>
           </section>
+          <section className="more-states"></section>
         </section>
         <section className="location">
           <h1>Location </h1>
@@ -417,6 +449,16 @@ class Calculator extends React.Component {
           ) : (
             ""
           )}
+        </section>
+        <section className="video-section">
+          <h1>Basics of Sales tax in USA</h1>
+          <iframe
+            src="https://www.youtube.com/embed/87gNa9Uxbts"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </section>
       </>
     );
